@@ -5,10 +5,15 @@
     <div class="col-md-4">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h4 class="mb-3 text-center">Login</h4>
+                <h4 class="mb-3 text-center">Registrar-se</h4>
 
-                <form method="POST" action="{{ route('auth.login') }}">
+                <form method="POST" action="{{ route('auth.register') }}">
                     @csrf
+
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Email</label>
@@ -21,12 +26,12 @@
                     </div>
 
                     @if(session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
+                        <div class="alert alert-danger">{{ $error }}</div>
                     @endif
 
-                    <button class="btn btn-primary w-100">Entrar</button>
+                    <button class="btn btn-primary w-100">Criar conta</button>
 
-                    <p class="text-center mt-3">Não possui uma conta ainda? <a href="{{ route('auth.view-register') }}">Clique aqui</a></p>
+                    <p class="text-center mt-3">Já possui uma conta? <a href="{{ route('auth.view-login') }}">Clique aqui</a></p>
                 </form>
             </div>
         </div>
