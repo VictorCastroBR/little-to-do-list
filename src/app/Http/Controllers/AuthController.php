@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard.index')->with('success', 'Usuário autenticado com sucesso!');
+        return redirect()->route('tasks.index')->with('success', 'Usuário autenticado com sucesso!');
     }
 
     public function register(Request $request)

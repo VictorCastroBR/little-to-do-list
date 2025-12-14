@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
 
 Route::redirect('/login', '/auth/login')->name('login');
 
@@ -14,7 +14,10 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
 });
 
 Route::prefix('/')->group(function () {
-    Route::prefix('dashboard')->controller(DashboardController::class)->middleware(['auth'])->group(function () {
-        Route::get('/', 'index')->name('dashboard.index');
+    Route::prefix('tarefas')->controller(TaskController::class)->middleware(['auth'])->group(function () {
+        Route::get('/', 'index')->name('tasks.index');
+        Route::post('/', 'store')->name('tasks.store');
+        Route::get('/nova-tarefa', 'create')->name('tasks.create');
+        Route::put('/completar-tarefa/{task}', 'completeTask')->name('tasks.complete');
     });
 });
