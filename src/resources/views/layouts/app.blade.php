@@ -8,6 +8,9 @@
     @vite(['resources/js/app.js', 'resources/scss/app.scss'])
 </head>
 <body>
+
+    <x-header></x-header>
+
     <div class="container">
         @yield('content')
     </div>

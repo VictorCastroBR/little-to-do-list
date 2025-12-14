@@ -26,4 +26,9 @@ class AuthService
 
         return false;
     }
+
+    public function logout(): void
+    {
+        Auth::logout();
+    }
 }

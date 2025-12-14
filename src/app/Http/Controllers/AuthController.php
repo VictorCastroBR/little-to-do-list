@@ -55,4 +55,11 @@ class AuthController extends Controller
 
         return redirect('/auth/login')->with('success', 'Conta criada com sucesso!');
     }
+
+    public function logout()
+    {
+        $this->authService->logout();
+
+        return redirect()->route('auth.login');
+    }
 }
