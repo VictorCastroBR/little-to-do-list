@@ -23,7 +23,29 @@ class TaskController
 
     public function create()
     {
-        return view('tasks.create');
+        return view('tasks.form');
+    }
+
+    public function edit(int $taskId)
+    {
+        $task = $this->taskService->getTask($taskId);
+
+        return view('tasks.form', compact('task'));
+    }
+
+    public function update(int $taskId, Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:100',
+            'description' => 'nullable|string',
+        ]);
+
+        $task = $this->taskService->updateTask($taskId, $validated);
+
+        if (!$task)
+            return back()->with('error', 'Erro ao atualizar tarefa');
+
+        return redirect()->route('tasks.index')->with('success', 'Tarefa atualiza com sucesso.');
     }
 
     public function store(Request $request)

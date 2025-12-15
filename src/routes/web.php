@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 
+Route::redirect('/', '/tarefas');
 Route::redirect('/login', '/auth/login')->name('login');
 
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
@@ -18,7 +19,9 @@ Route::prefix('/')->group(function () {
     Route::prefix('tarefas')->controller(TaskController::class)->middleware(['auth'])->group(function () {
         Route::get('/', 'index')->name('tasks.index');
         Route::post('/', 'store')->name('tasks.store');
+        Route::put('/{taskId}', 'update')->name('tasks.update');
         Route::get('/nova-tarefa', 'create')->name('tasks.create');
+        Route::get('/editar-tarefa/{taskId}', 'edit')->name('tasks.edit');
         Route::put('/completar-tarefa/{task}', 'completeTask')->name('tasks.complete');
     });
 });

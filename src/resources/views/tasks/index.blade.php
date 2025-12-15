@@ -24,9 +24,9 @@
                     @if(empty($tasks))
                         <div class="alert alert-secondary text-center mt-3">Você ainda não possui tarefas!</div>
                     @else
-                        <ul class="list-group">
+                        <ul class="list-group p-1">
                         @foreach($tasks as $task)
-                            <li class="list-group-item">
+                            <li class="list-group-item d-flex justify-content-between">
                                 <form class="complete-task-form"
                                     action="{{ route('tasks.complete', $task) }}"
                                     method="POST">
@@ -46,6 +46,12 @@
                                         {{ $task->description }}
                                     </small>
                                 </form>
+
+                                <div>
+                                    <a class="btn btn-outline-primary" href="{{ route('tasks.edit', $task->id) }}">
+                                        Editar
+                                    </a>
+                                </div>
                             </li>
                         @endforeach
                         </ul>

@@ -13,6 +13,18 @@ class TaskService
         return Task::all();
     }
 
+    public function getTask(int $taskId): Task
+    {
+        return Task::find($taskId);
+    }
+
+    public function updateTask(int $taskId, array $data): Task
+    {
+        $task = Task::find($taskId);
+        $task->update($data);
+        return $task;
+    }
+
     public function createTask(array $data, int $userId): Task
     {
         $data['user_id'] = $userId;
