@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+use App\Contracts\TaskRepositoryInterface;
+use App\Repositories\CacheTaskRepository;
+use App\Repositories\EloquentTaskRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,9 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::policy(
-            App\Models\Task::class,
-            App\Models\Policies\TaskPolicy::class
+        $this->app->bind(
+            TaskRepositoryInterface::class, function ($app) {
+                return new CacheTaskRepository(
+                    $app->make(EloquentTaskRepository::class)
+                );
+            }
         );
     }
 }

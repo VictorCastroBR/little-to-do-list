@@ -3,40 +3,45 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\COllection;
+use App\Contracts\TaskRepositoryInterface;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Scopes\UserScope;
 
 class TaskService
 {
+
+    public function __construct(
+        protected TaskRepositoryInterface $repository
+    ) {}
+
     public function getAllTasks(int $perPage = 10): Collection
     {
-        return Task::all();
+        return $this->repository->getAllTasks($perPage);
     }
 
     public function getTask(int $taskId): Task
     {
-        return Task::withoutGlobalScope(UserScope::class)->find($taskId);
+        return $this->repository->getTask($taskId);
     }
 
     public function updateTask(int $taskId, array $data): Task
     {
-        $task = Task::find($taskId);
-        $task->update($data);
-        return $task;
+        return $this->repository->updateTask($taskId, $data);
     }
 
     public function createTask(array $data, int $userId): Task
     {
         $data['user_id'] = $userId;
-        return Task::create($data);
+        return $this->repository->createTask($data, $userId);
     }
 
-    public function completeTask(Task $task, bool $completed = true): bool
+    public function completeTask(Task $task, bool $completed = true): Task
     {
-        return $task->update([
+        $data = [
             'completed' => $completed,
             'completed_at' => $completed ? now() : null
-        ]);
+        ];
+
+        return $this->repository->updateTask($task->id, $data);
     }
 }
