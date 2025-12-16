@@ -76,7 +76,7 @@ class TaskController extends Controller
     {
         $this->authorize('update', $task);
 
-        $taskCompleted = $this->taskService->completeTask($task, $request->boolean('completed'));
+        $taskCompleted = $this->taskService->completeTask($task->id, $request->boolean('completed'));
 
         if (!$taskCompleted)
             return redirect()
@@ -90,5 +90,17 @@ class TaskController extends Controller
                 $request->boolean('completed') ? "A tarefa '$task->title' foi concluída"
                 : "A tarefa '$task->title' foi desfeita"
             );
+    }
+
+    public function delete(Task $task)
+    {
+        $this->authorize('delete', $task);
+
+        $taskDeleted = $this->taskService->deleteTask($task->id);
+
+        if (!$taskDeleted)
+            return back()->with('error', "Não foi possível excluir a tarefa $task->title");
+
+        return redirect()->route('tasks.index')->with('success', "Tarefa '$task->title' excluída com sucesso.");
     }
 }

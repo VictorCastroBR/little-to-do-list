@@ -47,10 +47,18 @@
                                     </small>
                                 </form>
 
-                                <div>
-                                    <a class="btn btn-outline-primary" href="{{ route('tasks.edit', $task->id) }}">
+                                <div class="d-flex">
+                                    <a class="btn btn-outline-primary me-1" href="{{ route('tasks.edit', $task->id) }}">
                                         Editar
                                     </a>
+
+                                    <form action="{{ route('tasks.delete', $task) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger">
+                                            Excluir
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         @endforeach

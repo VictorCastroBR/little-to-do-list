@@ -35,13 +35,18 @@ class TaskService
         return $this->repository->createTask($data, $userId);
     }
 
-    public function completeTask(Task $task, bool $completed = true): Task
+    public function completeTask(int $taskId, bool $completed = true): Task
     {
         $data = [
             'completed' => $completed,
             'completed_at' => $completed ? now() : null
         ];
 
-        return $this->repository->updateTask($task->id, $data);
+        return $this->repository->updateTask($taskId, $data);
+    }
+
+    public function deleteTask(int $taskId)
+    {
+        return $this->repository->deleteTask($taskId);
     }
 }

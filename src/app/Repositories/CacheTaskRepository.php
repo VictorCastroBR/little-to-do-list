@@ -36,7 +36,7 @@ class CacheTaskRepository implements TaskRepositoryInterface
         });
     }
 
-    public function getTask(int $taskId): Task
+    public function getTask(int $taskId): ?Task
     {
         $cacheKey = 'task_' . $taskId . '_user_' . Auth::id();
 
@@ -45,7 +45,7 @@ class CacheTaskRepository implements TaskRepositoryInterface
         });
     }
 
-    public function updateTask(int $taskId, array $data): Task
+    public function updateTask(int $taskId, array $data): ?Task
     {
         $task = $this->repository->updateTask($taskId, $data);
 
@@ -61,6 +61,17 @@ class CacheTaskRepository implements TaskRepositoryInterface
         $task = $this->repository->createTask($data, $userId);
 
         $this->forgetTasksUser(Auth::id());
+
+        return $task;
+    }
+
+    public function deleteTask(int $taskId): bool
+    {
+        $task = $this->repository->deleteTask($taskId);
+
+        $userId = Auth::id();
+        $this->forgetTasksUser($userId);
+        $this->forgetTask($taskId, $userId);
 
         return $task;
     }

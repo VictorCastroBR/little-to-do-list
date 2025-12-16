@@ -20,6 +20,7 @@ Route::prefix('/')->group(function () {
         Route::get('/', 'index')->name('tasks.index');
         Route::post('/', 'store')->name('tasks.store');
         Route::put('/{task}', 'update')->name('tasks.update');
+        Route::delete('/{task}', 'delete')->name('tasks.delete');
         Route::get('/nova-tarefa', 'create')->name('tasks.create');
         Route::get('/editar-tarefa/{task}', 'edit')->name('tasks.edit');
         Route::put('/completar-tarefa/{task}', 'completeTask')->name('tasks.complete');

@@ -14,12 +14,12 @@ class EloquentTaskRepository implements TaskRepositoryInterface
         return Task::all();
     }
 
-    public function getTask(int $taskId): Task
+    public function getTask(int $taskId): ?Task
     {
         return Task::find($taskId);
     }
 
-    public function updateTask(int $taskId, array $data): Task
+    public function updateTask(int $taskId, array $data): ?Task
     {
         $task = Task::find($taskId);
         $task->update($data);
@@ -30,5 +30,10 @@ class EloquentTaskRepository implements TaskRepositoryInterface
     {
         $data['user_id'] = $userId;
         return Task::create($data);
+    }
+
+    public function deleteTask(int $taskId): bool
+    {
+        return Task::find($taskId)->delete();
     }
 }
