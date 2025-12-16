@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Routing\Controller;
 use App\Models\Task;
 
-class TaskController
+class TaskController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(
         protected TaskService $taskService
     ) {}
@@ -23,24 +27,26 @@ class TaskController
 
     public function create()
     {
+        $this->authorize('create', Task::class);
         return view('tasks.form');
     }
 
-    public function edit(int $taskId)
+    public function edit(Task $task)
     {
-        $task = $this->taskService->getTask($taskId);
-
+        $this->authorize('view', $task);
         return view('tasks.form', compact('task'));
     }
 
-    public function update(int $taskId, Request $request)
+    public function update(Request $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         $validated = $request->validate([
             'title' => 'required|string|max:100',
             'description' => 'nullable|string',
         ]);
 
-        $task = $this->taskService->updateTask($taskId, $validated);
+        $task = $this->taskService->updateTask($task->id, $validated);
 
         if (!$task)
             return back()->with('error', 'Erro ao atualizar tarefa');
@@ -50,6 +56,8 @@ class TaskController
 
     public function store(Request $request)
     {
+        $this->authorize('create');
+
         $validated = $request->validate([
             'title' => 'required|string|max:100',
             'description' => 'nullable|string',
@@ -66,6 +74,8 @@ class TaskController
 
     public function completeTask(Request $request, Task $task)
     {
+        $this->authorize('update', $task);
+
         $taskCompleted = $this->taskService->completeTask($task, $request->boolean('completed'));
 
         if (!$taskCompleted)

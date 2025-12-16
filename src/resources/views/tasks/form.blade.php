@@ -19,7 +19,7 @@
 
                 <form
                     method="POST"
-                    action="{{ empty($task) ? route('tasks.store') : route('tasks.update', $task->id) }}"
+                    action="{{ empty($task) ? route('tasks.store') : route('tasks.update', $task) }}"
                 >
                     @csrf
                     @if(isset($task))

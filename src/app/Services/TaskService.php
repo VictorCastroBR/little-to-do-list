@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Database\Eloquent\COllection;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Scopes\UserScope;
 
 class TaskService
 {
@@ -15,7 +16,7 @@ class TaskService
 
     public function getTask(int $taskId): Task
     {
-        return Task::find($taskId);
+        return Task::withoutGlobalScope(UserScope::class)->find($taskId);
     }
 
     public function updateTask(int $taskId, array $data): Task
