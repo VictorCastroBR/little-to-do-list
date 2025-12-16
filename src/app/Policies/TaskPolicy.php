@@ -18,7 +18,7 @@ class TaskPolicy
             : Response::deny($denyMessage);
     }
 
-    public function create(User $user): Response
+    public function create(User $user): bool
     {
         return true;
     }

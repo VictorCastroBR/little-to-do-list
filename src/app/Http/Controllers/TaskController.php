@@ -56,7 +56,7 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('create');
+        $this->authorize('create', Task::class);
 
         $validated = $request->validate([
             'title' => 'required|string|max:100',
